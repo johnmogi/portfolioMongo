@@ -219,4 +219,16 @@ module.exports = {
     connectAsync
 };
 
+0. models/item:
+const mongoose = require("mongoose");
+// Create Schema of a Item - מה יש במוצר אחד
+const ItemSchema = mongoose.Schema({
+    name: String,
+    price: Number,
+    stock: Number
+}, { versionKey: false }); // versionKey: false - לא להוסיף פרמטר נוסף עבור גרסה
+// Create a Item Model: 
+const Item = mongoose.model("Item", ItemSchema, "items"); // Model Name, Schema, Collection
+module.exports = Item;
+
 0. 

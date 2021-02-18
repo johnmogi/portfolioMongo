@@ -1,7 +1,19 @@
 const express = require("express");
 const itemsLogic = require("../business-logic-layer/items-logic");
-// const Item = require("../models/item");
+const Item = require("../models/item");
 const router = express.Router();
+
+// POST http://localhost:3000/api/items
+router.post("/", async (request, response) => {
+    try {
+        const item = new Item(request.body);
+        const addedItem = await itemsLogic.addItemAsync(item);
+        response.status(201).json(addedItem);
+    }
+    catch (err) {
+        response.status(500).send(err.message);
+    }
+});
 
 // GET http://localhost:3000/api/items
 router.get("/", async (request, response) => {
@@ -15,87 +27,77 @@ router.get("/", async (request, response) => {
     }
 });
 
-// // GET http://localhost:3000/api/items/7
-// router.get("/:_id", async (request, response) => {
-//     try {
-//         const _id = request.params._id;
-//         const item = await itemsLogic.getOneItemAsync(_id);
+// GET http://localhost:3000/api/items/7
+router.get("/:_id", async (request, response) => {
+    try {
+        const _id = request.params._id;
+        const item = await itemsLogic.getOneItemAsync(_id);
 
-//         if (!item) {
-//             response.sendStatus(404);
-//             return;
-//         }
+        if (!item) {
+            response.sendStatus(404);
+            return;
+        }
 
-//         response.json(item);
-//     }
-//     catch (err) {
-//         response.status(500).send(err.message);
-//     }
-// });
+        response.json(item);
+    }
+    catch (err) {
+        response.status(500).send(err.message);
+    }
+});
 
-// // POST http://localhost:3000/api/items
-// router.post("/", async (request, response) => {
-//     try {
-//         const item = new Item(request.body);
-//         const addedItem = await itemsLogic.addItemAsync(item);
-//         response.status(201).json(addedItem);
-//     }
-//     catch (err) {
-//         response.status(500).send(err.message);
-//     }
-// });
+// DELETE http://localhost:3000/api/items/7
+router.delete("/:_id", async (request, response) => {
+    try {
+        const _id = request.params._id;
+        await itemsLogic.deleteItemAsync(_id);
+        response.sendStatus(204);
+    }
+    catch (err) {
+        response.status(500).send(err.message);
+    }
+});
 
-// // PUT http://localhost:3000/api/items/7
-// router.put("/:_id", async (request, response) => {
-//     try {
-//         const _id = request.params._id;
-//         const item = new Item(request.body);
-//         item._id = _id;
-//         const updatedItem = await itemsLogic.updateItemAsync(item);
+// PUT http://localhost:3000/api/items/7
+router.put("/:_id", async (request, response) => {
+    try {
+        const _id = request.params._id;
+        const item = new Item(request.body);
+        item._id = _id;
+        const updatedItem = await itemsLogic.updateItemAsync(item);
 
-//         if (updatedItem === null) {
-//             response.sendStatus(404);
-//             return;
-//         }
+        if (updatedItem === null) {
+            response.sendStatus(404);
+            return;
+        }
 
-//         response.json(updatedItem);
-//     }
-//     catch (err) {
-//         response.status(500).send(err.message);
-//     }
-// });
+        response.json(updatedItem);
+    }
+    catch (err) {
+        response.status(500).send(err.message);
+    }
+});
 
-// // PATCH http://localhost:3000/api/items/7
-// router.patch("/:_id", async (request, response) => {
-//     try {
-//         const _id = request.params._id;
-//         const item = new Item(request.body);
-//         item._id = _id;
-//         const updatedItem = await itemsLogic.updateItemAsync(item);
+// PATCH http://localhost:3000/api/items/7
+router.patch("/:_id", async (request, response) => {
+    try {
+        const _id = request.params._id;
+        const item = new Item(request.body);
+        item._id = _id;
+        const updatedItem = await itemsLogic.updateItemAsync(item);
 
-//         if (updatedItem === null) {
-//             response.sendStatus(404);
-//             return;
-//         }
+        if (updatedItem === null) {
+            response.sendStatus(404);
+            return;
+        }
 
-//         response.json(updatedItem);
-//     }
-//     catch (err) {
-//         response.status(500).send(err.message);
-//     }
-// });
+        response.json(updatedItem);
+    }
+    catch (err) {
+        response.status(500).send(err.message);
+    }
+});
 
-// // DELETE http://localhost:3000/api/items/7
-// router.delete("/:_id", async (request, response) => {
-//     try {
-//         const _id = request.params._id;
-//         await itemsLogic.deleteItemAsync(_id);
-//         response.sendStatus(204);
-//     }
-//     catch (err) {
-//         response.status(500).send(err.message);
-//     }
-// });
+
 
 // // --------------------------------------------------
 // // Queries: 

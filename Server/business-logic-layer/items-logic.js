@@ -1,13 +1,13 @@
 const dal = require("../data-access-layer/dal");
-// const Item = require("../models/item");
+const Item = require("../models/item");
 
 dal.connectAsync()
-    .then(db => console.log("We're connected to " + db.name + " on MongoDB."))
+    .then(db => console.log("We're connected to johnPortfolio on MongoDB."))
     .catch(err => console.log(err));
 
-// function addItemAsync(item) {
-//     return item.save();
-// }
+function addItemAsync(item) {
+    return item.save();
+}
 
 function getAllItemsAsync() {
     return new Promise((resolve, reject) => {
@@ -21,41 +21,42 @@ function getAllItemsAsync() {
     });
 }
 
-// function getOneItemAsync(_id) {
-//     return new Promise((resolve, reject) => {
-//         Item.findOne({ _id }, (err, item) => {
-//             if (err) {
-//                 reject(err);
-//                 return;
-//             }
-//             resolve(item);
-//         });
-//     });
-// }
+function getOneItemAsync(_id) {
+    return new Promise((resolve, reject) => {
+        Item.findOne({ _id }, (err, item) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(item);
+        });
+    });
+}
 
-// function updateItemAsync(item) {
-//     return new Promise((resolve, reject) => {
-//         Item.updateOne({ _id: item._id }, item, (err, info) => {
-//             if (err) {
-//                 reject(err);
-//                 return;
-//             }
-//             resolve(info.n ? item : null); // info.n - מספר המוצרים שנמצאו
-//         });
-//     });
-// }
+function deleteItemAsync(_id) {
+    return new Promise((resolve, reject) => {
+        Item.deleteOne({ _id }, (err, info) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+}
 
-// function deleteItemAsync(_id) {
-//     return new Promise((resolve, reject) => {
-//         Item.deleteOne({ _id }, (err, info) => {
-//             if (err) {
-//                 reject(err);
-//                 return;
-//             }
-//             resolve();
-//         });
-//     });
-// }
+function updateItemAsync(item) {
+    return new Promise((resolve, reject) => {
+        Item.updateOne({ _id: item._id }, item, (err, info) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(info.n ? item : null); 
+        });
+    });
+}
+
 
 // // Comparison Query Operators: 
 // // $gt  - Greater Than...
@@ -80,10 +81,10 @@ function getAllItemsAsync() {
 // }
 
 module.exports = {
-    // addItemAsync,
+   addItemAsync,
    getAllItemsAsync,
-    // getOneItemAsync,
-    // updateItemAsync,
-    // deleteItemAsync,
+   getOneItemAsync,
+   deleteItemAsync,
+   updateItemAsync,
     // getItemsByPriceRangeAsync
 };
